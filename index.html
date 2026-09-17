@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hussain Mahi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- background liquid blobs -->
+  <div class="bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="noise"></div>
+  </div>
+
+  <nav class="navbar glass">
+    <span class="brand">Hussain<span class="dot">.</span>Mahi</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#interests">Interests</a></li>
+      <li><a href="#hobbies">Hobbies</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="avatar-wrap glass">
+      <svg class="avatar" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Waving cartoon avatar">
+        <defs>
+          <radialGradient id="faceShade" cx="35%" cy="30%" r="80%">
+            <stop offset="0%" stop-color="#ffe4c2"/>
+            <stop offset="100%" stop-color="#ffd6a3"/>
+          </radialGradient>
+          <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8bd17c"/>
+            <stop offset="100%" stop-color="#4a9d5a"/>
+          </linearGradient>
+        </defs>
+
+        <!-- body / shirt -->
+        <path d="M75 300 C75 210 105 175 150 175 C195 175 225 210 225 300 Z" fill="url(#shirtGrad)"/>
+        <rect x="130" y="178" width="40" height="26" rx="6" fill="#2f5d3a"/>
+
+        <!-- waving arm -->
+        <g class="wave-arm">
+          <path d="M188 210 C215 205 235 185 238 158" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none"/>
+          <circle cx="238" cy="155" r="15" fill="#ffd6a3"/>
+        </g>
+
+        <!-- still arm -->
+        <path d="M112 212 C95 218 84 235 82 258" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none"/>
+
+        <!-- neck -->
+        <rect x="138" y="150" width="24" height="30" fill="#ffd6a3"/>
+
+        <!-- head -->
+        <circle cx="150" cy="115" r="72" fill="url(#faceShade)"/>
+
+        <!-- ears -->
+        <circle cx="80" cy="118" r="10" fill="#ffd6a3"/>
+        <circle cx="220" cy="118" r="10" fill="#ffd6a3"/>
+
+        <!-- hair -->
+        <path d="M78 100 C70 45 110 15 150 15 C190 15 230 45 222 100
+                 C215 70 195 55 150 55 C105 55 85 70 78 100 Z" fill="#1b1b22"/>
+        <path d="M118 45 C126 30 138 22 150 22" stroke="#1b1b22" stroke-width="10" stroke-linecap="round" fill="none"/>
+
+        <!-- glasses -->
+        <circle cx="120" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6"/>
+        <circle cx="180" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6"/>
+        <line x1="146" y1="120" x2="154" y2="120" stroke="#1b1b22" stroke-width="6"/>
+        <line x1="94" y1="118" x2="80" y2="112" stroke="#1b1b22" stroke-width="5"/>
+        <line x1="206" y1="118" x2="220" y2="112" stroke="#1b1b22" stroke-width="5"/>
+
+        <!-- eyes -->
+        <circle cx="120" cy="122" r="5" fill="#1b1b22"/>
+        <circle cx="180" cy="122" r="5" fill="#1b1b22"/>
+
+        <!-- nose + mouth -->
+        <circle cx="150" cy="138" r="4" fill="#e2996b"/>
+        <path d="M132 152 Q150 168 168 152" stroke="#1b1b22" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+        <!-- blush -->
+        <circle cx="103" cy="140" r="7" fill="#ff9d9d" opacity="0.55"/>
+        <circle cx="197" cy="140" r="7" fill="#ff9d9d" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">Hi, I'm <span class="highlight">Hussain Mahi</span></h1>
+    <p class="hero-sub">Coder by craft, hardware tinkerer by curiosity — always exploring something new.</p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#connect">Let's Connect</a>
+      <a class="btn btn-ghost" href="#about">About Me</a>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="section-head">
+      <span class="tag">Who I Am</span>
+      <h2>About Me</h2>
+    </div>
+    <div class="glass about-card">
+      <p>
+        I'm someone who loves building and breaking things apart just to understand how they work.
+        Coding gives me a way to turn ideas into something real, while messing around with hardware
+        scratches a different itch — wires, boards, and figuring out how software actually talks to
+        the physical world. I'm always chasing the next thing worth learning, whether that means a
+        new language, a new project, or a completely new rabbit hole to fall into.
+      </p>
+    </div>
+  </section>
+
+  <!-- INTERESTS -->
+  <section id="interests" class="section">
+    <div class="section-head">
+      <span class="tag">What I Do</span>
+      <h2>Things I Love</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="glass feature-card">
+        <div class="icon-circle">💻</div>
+        <h3>Coding</h3>
+        <p>Writing code to solve problems, build ideas, and see them come to life — one project at a time.</p>
+      </div>
+      <div class="glass feature-card">
+        <div class="icon-circle">🔧</div>
+        <h3>Hardware Tinkering</h3>
+        <p>Opening things up, wiring things together, and figuring out how computers work beneath the software.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOBBIES -->
+  <section id="hobbies" class="section">
+    <div class="section-head">
+      <span class="tag">Beyond the Screen</span>
+      <h2>Hobbies &amp; Curiosities</h2>
+    </div>
+    <div class="grid grid-4">
+      <div class="glass hobby-card">
+        <div class="icon-circle small">✈️</div>
+        <h3>Travelling</h3>
+        <p>Exploring new places and collecting stories along the way.</p>
+      </div>
+      <div class="glass hobby-card">
+        <div class="icon-circle small">📜</div>
+        <h3>Ancient Books</h3>
+        <p>Reading old texts and losing myself in forgotten knowledge.</p>
+      </div>
+      <div class="glass hobby-card">
+        <div class="icon-circle small">🏺</div>
+        <h3>History's Mysteries</h3>
+        <p>Digging into unsolved and mysterious moments of history.</p>
+      </div>
+      <div class="glass hobby-card">
+        <div class="icon-circle small">👻</div>
+        <h3>Paranormal</h3>
+        <p>Curious about the unexplained and everything beyond the ordinary.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="section">
+    <div class="section-head">
+      <span class="tag">Take a Break</span>
+      <h2>Play Something I Built</h2>
+      <p class="section-sub">Hey, you can spend some time by playing games that I created.</p>
+    </div>
+
+    <div class="grid grid-2 games-grid">
+      <!-- Memory Match -->
+      <div class="glass game-card">
+        <h3>Leaf Match</h3>
+        <p>Flip the cards and find every matching pair.</p>
+        <div class="game-stats">
+          <span>Moves: <b id="memMoves">0</b></span>
+          <button class="btn btn-ghost btn-small" id="memReset">Restart</button>
+        </div>
+        <div class="memory-board" id="memoryBoard"></div>
+        <p class="game-message" id="memMessage">&nbsp;</p>
+      </div>
+
+      <!-- Snake -->
+      <div class="glass game-card">
+        <h3>Garden Snake</h3>
+        <p>Guide the snake to eat the berries. Arrow keys or WASD.</p>
+        <div class="game-stats">
+          <span>Score: <b id="snakeScore">0</b></span>
+          <button class="btn btn-ghost btn-small" id="snakeReset">Restart</button>
+        </div>
+        <canvas id="snakeCanvas" width="300" height="300"></canvas>
+        <p class="game-message" id="snakeMessage">Click the board, then press an arrow key to start.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECT -->
+  <section id="connect" class="section">
+    <div class="section-head">
+      <span class="tag">Reach Out</span>
+      <h2>Let's Connect</h2>
+    </div>
+    <div class="grid grid-2">
+      <a class="glass social-card" href="https://www.instagram.com/mahi.mdhussain/" target="_blank" rel="noopener noreferrer">
+        <div class="icon-circle">📷</div>
+        <div>
+          <h3>Instagram</h3>
+          <p>@mahi.mdhussain</p>
+        </div>
+      </a>
+      <a class="glass social-card" href="https://github.com/hossainmahi78890-maker" target="_blank" rel="noopener noreferrer">
+        <div class="icon-circle">🐙</div>
+        <div>
+          <h3>GitHub</h3>
+          <p>hossainmahi78890-maker</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Hussain Mahi. Built with curiosity.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
