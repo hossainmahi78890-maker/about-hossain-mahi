@@ -9,14 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 <script>
-  // First visit: the Figma-style build intro. Later visits: a quick fade-up.
-  // Add ?intro to the URL to replay the intro. Reduced motion skips both.
+  // Every visit: each section is built Figma-style the first time you scroll to it.
+  // Reduced motion skips the animation and shows everything right away.
   (function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var seen = false;
-    try { seen = localStorage.getItem("mahi-intro-seen") === "1"; } catch (e) {}
-    if (/[?&]intro\b/.test(location.search)) seen = false;
-    document.documentElement.classList.add(seen ? "returning" : "building");
+    document.documentElement.classList.add("building");
   })();
 </script>
 </head>
@@ -24,7 +21,10 @@
 
   <nav class="navbar glass">
     <span class="brand">Hussain<span class="dot">.</span>Mahi</span>
-    <ul class="nav-links">
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#interests">Interests</a></li>
       <li><a href="#hobbies">Hobbies</a></li>
@@ -197,12 +197,18 @@
       <!-- Snake -->
       <div class="glass game-card">
         <h3>Snake</h3>
-        <p>Guide the snake to eat the berries. Arrow keys or WASD.</p>
+        <p>Guide the snake to eat the berries. Arrow keys, WASD, or swipe.</p>
         <div class="game-stats">
           <span>Score: <b id="snakeScore">0</b></span>
           <button class="btn btn-ghost btn-small" id="snakeReset">Restart</button>
         </div>
         <canvas id="snakeCanvas" width="300" height="300"></canvas>
+        <div class="dpad" id="snakePad" aria-label="Snake controls">
+          <button type="button" class="dpad-btn up" data-dir="0,-1" aria-label="Move up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 15 12 9 18 15"/></svg></button>
+          <button type="button" class="dpad-btn left" data-dir="-1,0" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button type="button" class="dpad-btn right" data-dir="1,0" aria-label="Move right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <button type="button" class="dpad-btn down" data-dir="0,1" aria-label="Move down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </div>
         <p class="game-message" id="snakeMessage">Click the board, then press an arrow key to start.</p>
       </div>
     </div>

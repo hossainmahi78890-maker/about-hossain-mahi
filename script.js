@@ -1,8 +1,9 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
 /* ================= Figma-style designer cursor =================
-   Every component starts hidden. A "Mahi" cursor flies over, drags out a
-   selection frame, and the component appears inside it. Headings are typed in.
+   Every component starts hidden. The first time a section scrolls into view,
+   a "Mahi" cursor flies over, drags out a selection frame for each component
+   in turn, and the component appears inside it. Headings are typed in.
 */
 (function () {
   // keep in sync with the html.building rule in style.css
@@ -13,38 +14,10 @@ document.getElementById("year").textContent = new Date().getFullYear();
   ].join(",");
   const TYPE_SELECTOR = ".hero-title, .section-head h2";
 
-  const INTRO_KEY = "mahi-intro-seen";
   const root = document.documentElement;
-  const targets = [...document.querySelectorAll(BUILD_SELECTOR)];
-
-  // Return visits: a quick, quiet fade-up instead of the full build
-  if (root.classList.contains("returning")) {
-    const fadeObserver = new IntersectionObserver(
-      (entries) => {
-        entries
-          .filter((entry) => entry.isIntersecting)
-          .forEach((entry, i) => {
-            const el = entry.target;
-            fadeObserver.unobserve(el);
-            el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-            el.style.transitionDelay = `${Math.min(i, 6) * 70}ms`;
-            el.classList.add("built");
-            setTimeout(() => {
-              el.style.transition = "";
-              el.style.transitionDelay = "";
-            }, 1100);
-          });
-      },
-      { threshold: 0.15 }
-    );
-    targets.forEach((el) => fadeObserver.observe(el));
-    return;
-  }
-
   if (!root.classList.contains("building")) return;
 
-  // First visit: remember it so the build intro plays only once
-  try { localStorage.setItem(INTRO_KEY, "1"); } catch (e) {}
+  const targets = [...document.querySelectorAll(BUILD_SELECTOR)];
 
   // ---- overlay elements ----
   const layer = document.createElement("div");
@@ -57,7 +30,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
       <span class="sel-dim"></span>
     </div>
     <div class="type-caret"></div>
-    <div class="d-cursor">
+    <div class="d-cursor hidden">
       <svg viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="#5e5263" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
       <span class="d-cursor-name">Mahi</span>
     </div>`;
@@ -70,7 +43,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const cursor = layer.querySelector(".d-cursor");
 
   const skipBtn = document.createElement("button");
-  skipBtn.className = "skip-build";
+  skipBtn.className = "skip-build gone";
   skipBtn.type = "button";
   skipBtn.textContent = "Skip animation";
   document.body.appendChild(skipBtn);
@@ -97,15 +70,46 @@ document.getElementById("year").textContent = new Date().getFullYear();
     });
   }
 
-  // page coordinates of an element (headings use the tight text box)
-  function pageRect(el, isText) {
-    let r = el.getBoundingClientRect();
-    if (isText) {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      r = range.getBoundingClientRect();
-    }
-    return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height, vx: r.left };
+  // The overlay scrolls with the page, so positions are measured from its corner.
+  function origin() {
+    const r = layer.getBoundingClientRect();
+    return { x: r.left, y: r.top };
+  }
+
+  function textRange(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range;
+  }
+
+  function layerRect(el, isText) {
+    const o = origin();
+    const r = isText ? textRange(el).getBoundingClientRect() : el.getBoundingClientRect();
+    return { x: r.left - o.x, y: r.top - o.y, w: r.width, h: r.height };
+  }
+
+  // One box per line of a heading, so wrapped headings (phones) type line by line
+  function textLines(el) {
+    const lines = [];
+    [...textRange(el).getClientRects()]
+      .filter((r) => r.width > 0 && r.height > 0)
+      .forEach((r) => {
+        const line = lines.find((l) => Math.abs(l.top - r.top) < r.height / 2);
+        if (line) {
+          line.left = Math.min(line.left, r.left);
+          line.right = Math.max(line.right, r.right);
+          line.top = Math.min(line.top, r.top);
+          line.bottom = Math.max(line.bottom, r.bottom);
+        } else {
+          lines.push({ left: r.left, right: r.right, top: r.top, bottom: r.bottom });
+        }
+      });
+    return lines.sort((a, b) => a.top - b.top);
+  }
+
+  function onScreen(el) {
+    const r = el.getBoundingClientRect();
+    return r.bottom > 0 && r.top < innerHeight;
   }
 
   function labelFor(el) {
@@ -118,7 +122,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     return "Card";
   }
 
-  let pos = { x: innerWidth + scrollX + 40, y: scrollY + innerHeight * 0.8 };
+  let pos = { x: layer.offsetWidth + 40, y: innerHeight * 0.8 - origin().y };
   function placeCursor(x, y) {
     pos = { x, y };
     cursor.style.transform = `translate(${x - 3}px, ${y - 2}px)`;
@@ -141,16 +145,65 @@ document.getElementById("year").textContent = new Date().getFullYear();
     boxDim.textContent = `${Math.round(w)} × ${Math.round(h)}`;
   }
 
-  function reveal(el) {
-    el.style.transition = "opacity 0.35s ease";
+  function reveal(el, ms = 350) {
+    el.style.transition = `opacity ${ms}ms ease`;
     el.classList.add("built");
-    setTimeout(() => (el.style.transition = ""), 400);
+    setTimeout(() => (el.style.transition = ""), ms + 50);
+  }
+
+  // type a heading in, line by line, with a blinking caret
+  async function typeIn(el, speed) {
+    const o = origin();
+    const elBox = el.getBoundingClientRect();
+    const lines = textLines(el).map((l) => ({
+      x: l.left - elBox.left, y: l.top - elBox.top, w: l.right - l.left, h: l.bottom - l.top,
+    }));
+    if (!lines.length) return reveal(el);
+    // line boxes can overlap a little; split the overlap so the next line never peeks through
+    lines.forEach((l, i) => {
+      const prev = lines[i - 1], next = lines[i + 1];
+      l.top = prev ? (prev.y + prev.h + l.y) / 2 : l.y - 2;
+      l.bottom = next ? (l.y + l.h + next.y) / 2 : l.y + l.h + 2;
+    });
+    const total = lines.reduce((s, l) => s + l.w, 0);
+    const chars = Math.max(1, el.textContent.trim().length);
+
+    // Show only the first `px` of text, counted across the lines in order.
+    // Each line is its own rectangle inside one clip polygon.
+    function showUpTo(px) {
+      const pts = [];
+      let left = px;
+      let caretAt = { x: lines[0].x, y: lines[0].y, h: lines[0].h };
+      for (const l of lines) {
+        const w = Math.min(l.w, Math.max(0, left));
+        left -= l.w;
+        if (w <= 0) break;
+        const x0 = l.x - 8, y0 = l.top;
+        const x1 = l.x + w + (w >= l.w ? 8 : 0), y1 = l.bottom;
+        pts.push(`${x0}px ${y0}px`, `${x1}px ${y0}px`, `${x1}px ${y1}px`, `${x0}px ${y1}px`, `${x0}px ${y0}px`);
+        caretAt = { x: l.x + w, y: l.y, h: l.h };
+      }
+      el.style.clipPath = pts.length ? `polygon(${pts.join(",")})` : "inset(50%)";
+      caret.style.height = `${caretAt.h}px`;
+      caret.style.transform = `translate(${elBox.left - o.x + caretAt.x}px, ${elBox.top - o.y + caretAt.y}px)`;
+    }
+
+    showUpTo(0);
+    el.classList.add("built");
+    caret.className = "type-caret on";
+    const last = lines[lines.length - 1];
+    await moveCursor(elBox.left - o.x + last.x + last.w + 14, elBox.top - o.y + last.y + last.h + 10, speed * 0.6);
+    await tween(Math.min(1400, chars * 55) * speed, linear, (e) => {
+      showUpTo(total * (Math.round(e * chars) / chars));
+    });
+    el.style.clipPath = "";
+    caret.className = "type-caret";
   }
 
   // ---- build one component ----
   async function build(el, speed) {
     const isText = el.matches(TYPE_SELECTOR);
-    const r = pageRect(el, isText);
+    const r = layerRect(el, isText);
 
     await moveCursor(r.x, r.y, speed);
     if (skipped) return;
@@ -167,34 +220,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
     cursor.classList.remove("press");
     if (skipped) return;
 
-    if (isText) {
-      // type the heading in, left to right, with a blinking caret
-      const elRect = el.getBoundingClientRect();
-      const textLeft = r.vx - elRect.left;
-      const chars = Math.max(1, el.textContent.trim().length);
-      el.style.clipPath = `inset(-10px ${elRect.width - textLeft}px -10px -10px)`;
-      el.classList.add("built");
-      caret.style.height = `${r.h}px`;
-      caret.style.transform = `translate(${r.x}px, ${r.y}px)`;
-      caret.className = "type-caret on";
-      await moveCursor(r.x + r.w + 14, r.y + r.h + 10, speed * 0.6);
-      await tween(Math.min(1300, chars * 55) * speed, linear, (e) => {
-        const shown = Math.round(e * chars) / chars;
-        const edge = textLeft + r.w * shown;
-        el.style.clipPath = `inset(-10px ${Math.max(0, elRect.width - edge)}px -10px -10px)`;
-        caret.style.transform = `translate(${r.x + r.w * shown}px, ${r.y}px)`;
-      });
-      el.style.clipPath = "";
-      caret.className = "type-caret";
-    } else {
-      reveal(el);
-    }
+    if (isText) await typeIn(el, speed);
+    else reveal(el);
 
     await wait(160 * speed);
     box.classList.add("fade");
   }
 
-  // ---- queue: build components in page order as they scroll into view ----
+  // ---- queue: build components in page order as their section scrolls into view ----
   const queue = [];
   let running = false;
   let idleTimer;
@@ -204,11 +237,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
     running = true;
     clearTimeout(idleTimer);
     cursor.classList.remove("hidden");
+    skipBtn.classList.remove("gone");
     while (queue.length && !skipped) {
       queue.sort((a, b) => targets.indexOf(a) - targets.indexOf(b));
       const el = queue.shift();
+      // Already scrolled past it (e.g. jumped via the menu)? Just show it.
+      if (!onScreen(el)) { reveal(el, 250); continue; }
       // speed up when the visitor scrolls ahead of the cursor
-      const speed = queue.length > 3 ? 0.4 : queue.length > 1 ? 0.7 : 1;
+      const speed = queue.length > 5 ? 0.5 : queue.length > 2 ? 0.75 : 1;
       await build(el, speed);
     }
     running = false;
@@ -216,7 +252,10 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (targets.every((t) => t.classList.contains("built"))) {
       setTimeout(finish, 900);
     } else {
-      idleTimer = setTimeout(() => cursor.classList.add("hidden"), 1200);
+      idleTimer = setTimeout(() => {
+        cursor.classList.add("hidden");
+        skipBtn.classList.add("gone");
+      }, 1200);
     }
   }
 
@@ -230,7 +269,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
       });
       run();
     },
-    { threshold: 0.2 }
+    { threshold: 0.15 }
   );
   targets.forEach((el) => observer.observe(el));
 
@@ -250,6 +289,24 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }
 
   skipBtn.addEventListener("click", finish);
+})();
+
+/* ================= Mobile menu ================= */
+(function () {
+  const nav = document.querySelector(".navbar");
+  const toggle = nav && nav.querySelector(".nav-toggle");
+  if (!toggle) return;
+
+  function setOpen(open) {
+    nav.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+
+  toggle.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
+  nav.querySelectorAll(".nav-links a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+  document.addEventListener("click", (e) => { if (!nav.contains(e.target)) setOpen(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
 })();
 
 /* ================= Memory Match ================= */
@@ -368,6 +425,10 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const COLS = canvas.width / CELL;
   const ROWS = canvas.height / CELL;
   const SPEED = 130;
+  const isTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const START_MSG = isTouch
+    ? "Swipe on the board or tap the arrows to start."
+    : "Click the board, then press an arrow key to start.";
 
   let snake, dir, nextDir, food, score, loopId, running;
 
@@ -389,7 +450,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     score = 0;
     running = true;
     scoreEl.textContent = "0";
-    messageEl.textContent = "Click the board, then press an arrow key to start.";
+    messageEl.textContent = START_MSG;
     food = randomFood();
     if (loopId) clearInterval(loopId);
     loopId = setInterval(tick, SPEED);
@@ -479,6 +540,35 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   canvas.addEventListener("click", () => {
     if (!running) startGame();
+  });
+
+  // Touch: swipe on the board
+  let touchFrom = null;
+  canvas.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    touchFrom = { x: t.clientX, y: t.clientY };
+  }, { passive: true });
+  canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+    if (!touchFrom) return;
+    const t = e.touches[0];
+    const dx = t.clientX - touchFrom.x;
+    const dy = t.clientY - touchFrom.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 22) return;
+    if (Math.abs(dx) > Math.abs(dy)) setDirection(Math.sign(dx), 0);
+    else setDirection(0, Math.sign(dy));
+    touchFrom = { x: t.clientX, y: t.clientY };
+  }, { passive: false });
+  canvas.addEventListener("touchend", () => (touchFrom = null));
+
+  // Touch: on-screen arrows
+  document.querySelectorAll("#snakePad .dpad-btn").forEach((btn) => {
+    btn.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      if (!running) startGame();
+      const [x, y] = btn.dataset.dir.split(",").map(Number);
+      setDirection(x, y);
+    });
   });
 
   resetBtn.addEventListener("click", startGame);
