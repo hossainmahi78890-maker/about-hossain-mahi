@@ -6,18 +6,24 @@
   --peach: #f2aa8c;
   --cream: #f6e2b4;
 
+  /* Pixel 11 "Frost" accent */
+  --frost: #babbd0;
+  --frost-mid: #9496b8;
+  --frost-deep: #6e6f94;
+  --frost-soft: #e8e8f1;
+
   --bg-1: #fbf5ea;
   --text-main: #45394a;
   --text-sub: #77697a;
-  --accent-1: var(--rose);
-  --accent-2: var(--peach);
+  --accent-1: var(--frost-deep);
+  --accent-2: var(--frost);
   --accent-3: var(--plum);
   --surface: #fffcf6;
   --surface-strong: #ffffff;
   --border: rgba(94, 82, 99, 0.14);
-  --shadow: rgba(94, 82, 99, 0.1);
-  --radius-lg: 28px;
-  --radius-md: 20px;
+  --shadow: rgba(94, 82, 99, 0.07);
+  --radius-lg: 16px;
+  --radius-md: 12px;
 }
 
 * {
@@ -40,7 +46,7 @@ body {
 }
 
 ::selection {
-  background: var(--cream);
+  background: var(--frost-soft);
   color: var(--plum);
 }
 
@@ -49,7 +55,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 28px var(--shadow);
+  box-shadow: 0 1px 2px rgba(69, 57, 74, 0.04), 0 6px 20px var(--shadow);
   position: relative;
 }
 
@@ -63,7 +69,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px 26px;
-  border-radius: 999px;
+  border-radius: 14px;
   z-index: 50;
 }
 
@@ -74,9 +80,8 @@ body {
 }
 
 .brand .dot {
-  color: var(--rose);
+  color: var(--frost-deep);
   display: inline-block;
-  animation: dotPulse 2.4s ease-in-out infinite;
 }
 
 @keyframes dotPulse {
@@ -99,7 +104,7 @@ body {
 }
 
 .nav-links a:hover {
-  color: var(--rose);
+  color: var(--frost-deep);
 }
 
 /* ---------- Hero ---------- */
@@ -123,8 +128,7 @@ body {
   justify-content: center;
   padding: 14px;
   margin-bottom: 32px;
-  background: var(--cream);
-  animation: bob 4s ease-in-out infinite;
+  background: var(--frost);
 }
 
 @keyframes bob {
@@ -153,14 +157,12 @@ body {
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 700;
   line-height: 1.15;
+  letter-spacing: -0.02em;
   margin-bottom: 16px;
 }
 
 .highlight {
-  background: linear-gradient(90deg, var(--rose), var(--peach));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--frost-deep);
 }
 
 .hero-sub {
@@ -181,7 +183,7 @@ body {
 .btn {
   display: inline-block;
   padding: 13px 28px;
-  border-radius: 999px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 0.95rem;
   font-family: inherit;
@@ -192,14 +194,15 @@ body {
 
 .btn-primary {
   color: #ffffff;
-  background: linear-gradient(90deg, var(--plum), var(--rose));
-  border: none;
-  box-shadow: 0 10px 26px rgba(168, 107, 116, 0.3);
+  background: var(--frost-deep);
+  border: 1px solid var(--frost-deep);
+  box-shadow: 0 4px 14px rgba(110, 111, 148, 0.25);
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 32px rgba(168, 107, 116, 0.42);
+  background: var(--plum);
+  border-color: var(--plum);
+  transform: translateY(-2px);
 }
 
 .btn-ghost {
@@ -209,8 +212,8 @@ body {
 }
 
 .btn-ghost:hover {
-  background: var(--cream);
-  transform: translateY(-3px);
+  background: var(--frost-soft);
+  transform: translateY(-2px);
 }
 
 /* ---------- Sections ---------- */
@@ -227,20 +230,18 @@ body {
 
 .tag {
   display: inline-block;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: var(--cream);
-  color: var(--plum);
-  font-size: 0.8rem;
+  color: var(--frost-deep);
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .section-head h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.4rem);
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .about-card {
@@ -294,7 +295,7 @@ body {
 }
 
 .game-stats b {
-  color: var(--rose);
+  color: var(--frost-deep);
 }
 
 .btn-small {
@@ -306,7 +307,7 @@ body {
   margin-top: 14px;
   min-height: 20px;
   font-size: 0.9rem;
-  color: var(--rose);
+  color: var(--frost-deep);
   font-weight: 600;
 }
 
@@ -321,14 +322,14 @@ body {
 
 .memory-card {
   aspect-ratio: 1 / 1;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   cursor: pointer;
   user-select: none;
-  background: linear-gradient(135deg, var(--rose), var(--plum));
+  background: linear-gradient(135deg, var(--frost-mid), var(--frost-deep));
   transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
 }
 
@@ -336,13 +337,18 @@ body {
   transform: translateY(-3px);
 }
 
+.memory-card svg {
+  width: 46%;
+  height: 46%;
+}
+
 .memory-card.revealed {
-  background: var(--cream);
-  color: var(--text-main);
+  background: var(--frost-soft);
+  color: var(--frost-deep);
 }
 
 .memory-card.matched {
-  background: rgba(242, 170, 140, 0.25);
+  background: rgba(186, 187, 208, 0.3);
   opacity: 0.7;
   cursor: default;
   transform: none;
@@ -387,8 +393,8 @@ body {
 .feature-card:hover,
 .hobby-card:hover,
 .social-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(94, 82, 99, 0.16);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(94, 82, 99, 0.12);
 }
 
 .feature-card h3,
@@ -406,29 +412,40 @@ body {
 }
 
 .icon-circle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--cream);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--frost-soft);
+  color: var(--frost-deep);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
   margin-bottom: 18px;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.icon-circle svg {
+  width: 22px;
+  height: 22px;
 }
 
 .feature-card:hover .icon-circle,
 .hobby-card:hover .icon-circle,
 .social-card:hover .icon-circle {
-  transform: scale(1.15) rotate(-8deg);
+  background: var(--frost-deep);
+  color: #ffffff;
 }
 
 .icon-circle.small {
-  width: 46px;
-  height: 46px;
-  font-size: 1.25rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   margin-bottom: 14px;
+}
+
+.icon-circle.small svg {
+  width: 20px;
+  height: 20px;
 }
 
 .social-card {
@@ -466,10 +483,16 @@ body {
 /* ================= Figma-style build intro ================= */
 
 /* Hidden until the designer cursor draws them (keep in sync with BUILD_SELECTOR in script.js) */
-html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .btn,
+html:is(.building, .returning) :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .btn,
   .section-head .tag, .section-head h2, .section-sub, .about-card, .feature-card,
   .hobby-card, .game-card, .social-card, .footer p):not(.built) {
   opacity: 0;
+}
+
+html.returning :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .btn,
+  .section-head .tag, .section-head h2, .section-sub, .about-card, .feature-card,
+  .hobby-card, .game-card, .social-card, .footer p):not(.built) {
+  transform: translateY(14px);
 }
 
 .design-layer {
@@ -484,8 +507,8 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
 
 .sel-box {
   position: absolute;
-  border: 1.5px solid var(--rose);
-  background: rgba(168, 107, 116, 0.07);
+  border: 1.5px solid var(--frost-deep);
+  background: rgba(110, 111, 148, 0.07);
   opacity: 0;
 }
 
@@ -508,7 +531,7 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
   width: 8px;
   height: 8px;
   background: #ffffff;
-  border: 1.5px solid var(--rose);
+  border: 1.5px solid var(--frost-deep);
 }
 
 .sel-box .h-tl { top: -5px; left: -5px; }
@@ -521,7 +544,7 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
   left: 50%;
   bottom: -28px;
   transform: translateX(-50%);
-  background: var(--rose);
+  background: var(--frost-deep);
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
@@ -535,7 +558,7 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
   position: absolute;
   left: -1px;
   top: -22px;
-  color: var(--rose);
+  color: var(--frost-deep);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
@@ -544,7 +567,7 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
 .type-caret {
   position: absolute;
   width: 2px;
-  background: var(--rose);
+  background: var(--frost-deep);
   opacity: 0;
 }
 
@@ -613,7 +636,7 @@ html.building :is(.navbar, .avatar-wrap, .hero-title, .hero-sub, .hero-actions .
 }
 
 .skip-build:hover {
-  color: var(--rose);
+  color: var(--frost-deep);
 }
 
 .skip-build.gone {

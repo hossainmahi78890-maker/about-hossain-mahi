@@ -13,9 +13,38 @@ document.getElementById("year").textContent = new Date().getFullYear();
   ].join(",");
   const TYPE_SELECTOR = ".hero-title, .section-head h2";
 
+  const INTRO_KEY = "mahi-intro-seen";
   const root = document.documentElement;
-  if (!root.classList.contains("building")) return;
   const targets = [...document.querySelectorAll(BUILD_SELECTOR)];
+
+  // Return visits: a quick, quiet fade-up instead of the full build
+  if (root.classList.contains("returning")) {
+    const fadeObserver = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry, i) => {
+            const el = entry.target;
+            fadeObserver.unobserve(el);
+            el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            el.style.transitionDelay = `${Math.min(i, 6) * 70}ms`;
+            el.classList.add("built");
+            setTimeout(() => {
+              el.style.transition = "";
+              el.style.transitionDelay = "";
+            }, 1100);
+          });
+      },
+      { threshold: 0.15 }
+    );
+    targets.forEach((el) => fadeObserver.observe(el));
+    return;
+  }
+
+  if (!root.classList.contains("building")) return;
+
+  // First visit: remember it so the build intro plays only once
+  try { localStorage.setItem(INTRO_KEY, "1"); } catch (e) {}
 
   // ---- overlay elements ----
   const layer = document.createElement("div");
@@ -223,7 +252,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   skipBtn.addEventListener("click", finish);
 })();
 
-/* ================= Leaf Match (memory game) ================= */
+/* ================= Memory Match ================= */
 (function () {
   const board = document.getElementById("memoryBoard");
   const movesEl = document.getElementById("memMoves");
@@ -231,7 +260,16 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const resetBtn = document.getElementById("memReset");
   if (!board) return;
 
-  const ICONS = ["🌿", "🍃", "🌱", "🌻", "🍄", "🌸", "🌵", "🍂"];
+  const ICONS = [
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l9 16H3z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l9 9-9 9-9-9z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l8.2 4.75v9.5L12 21.5l-8.2-4.75v-9.5z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="currentColor" stroke-width="3.5"/></svg>',
+  ];
 
   let cards = [];
   let firstIndex = null;
@@ -271,7 +309,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   function onCardClick(index, cardEl) {
     if (lockBoard || cards[index].matched || index === firstIndex) return;
 
-    cardEl.textContent = cards[index].icon;
+    cardEl.innerHTML = cards[index].icon;
     cardEl.classList.add("revealed");
 
     if (firstIndex === null) {
@@ -317,7 +355,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   startGame();
 })();
 
-/* ================= Garden Snake ================= */
+/* ================= Snake ================= */
 (function () {
   const canvas = document.getElementById("snakeCanvas");
   if (!canvas) return;
@@ -408,7 +446,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     ctx.fill();
 
     snake.forEach((seg, i) => {
-      ctx.fillStyle = i === 0 ? "#5e5263" : "#a86b74";
+      ctx.fillStyle = i === 0 ? "#5e5263" : "#6e6f94";
       ctx.beginPath();
       ctx.roundRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2, 4);
       ctx.fill();
