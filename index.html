@@ -8,16 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<script>
+  // Hide components until the designer cursor builds them (skipped for reduced motion)
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("building");
+  }
+</script>
 </head>
 <body>
-
-  <!-- background liquid blobs -->
-  <div class="bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="noise"></div>
-  </div>
 
   <nav class="navbar glass">
     <span class="brand">Hussain<span class="dot">.</span>Mahi</span>
@@ -32,8 +30,6 @@
 
   <!-- HERO -->
   <header class="hero">
-    <div class="hero-glow"></div>
-
     <div class="avatar-wrap glass">
       <svg class="avatar" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Waving cartoon avatar">
         <defs>
@@ -42,14 +38,14 @@
             <stop offset="100%" stop-color="#ffd6a3"/>
           </radialGradient>
           <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8bd17c"/>
-            <stop offset="100%" stop-color="#4a9d5a"/>
+            <stop offset="0%" stop-color="#f2aa8c"/>
+            <stop offset="100%" stop-color="#a86b74"/>
           </linearGradient>
         </defs>
 
         <!-- body / shirt -->
         <path d="M75 300 C75 210 105 175 150 175 C195 175 225 210 225 300 Z" fill="url(#shirtGrad)"/>
-        <rect x="130" y="178" width="40" height="26" rx="6" fill="#2f5d3a"/>
+        <rect x="130" y="178" width="40" height="26" rx="6" fill="#5e5263"/>
 
         <!-- waving arm -->
         <g class="wave-arm">
