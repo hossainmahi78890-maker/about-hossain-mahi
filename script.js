@@ -1,312 +1,110 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ================= Figma-style designer cursor =================
-   Every component starts hidden. The first time a section scrolls into view,
-   a "Mahi" cursor flies over, drags out a selection frame for each component
-   in turn, and the component appears inside it. Headings are typed in.
-*/
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Respect reduced motion for SVG (SMIL) animations too, like the flying plane
+if (reduceMotion) {
+  document.querySelectorAll("svg").forEach((svg) => svg.pauseAnimations && svg.pauseAnimations());
+}
+
+/* ================= Global nav: hairline on scroll + phone menu ================= */
 (function () {
-  // keep in sync with the html.building rule in style.css
-  const BUILD_SELECTOR = [
-    ".navbar", ".avatar-wrap", ".hero-title", ".hero-sub", ".hero-actions .btn",
-    ".section-head .tag", ".section-head h2", ".section-sub", ".about-card",
-    ".feature-card", ".hobby-card", ".game-card", ".social-card", ".footer p",
-  ].join(",");
-  const TYPE_SELECTOR = ".hero-title, .section-head h2";
+  const nav = document.getElementById("gnav");
+  if (!nav) return;
+  const toggle = nav.querySelector(".nav-toggle");
 
-  const root = document.documentElement;
-  if (!root.classList.contains("building")) return;
-
-  const targets = [...document.querySelectorAll(BUILD_SELECTOR)];
-
-  // ---- overlay elements ----
-  const layer = document.createElement("div");
-  layer.className = "design-layer";
-  layer.innerHTML = `
-    <div class="sel-box">
-      <span class="sel-name"></span>
-      <span class="handle h-tl"></span><span class="handle h-tr"></span>
-      <span class="handle h-bl"></span><span class="handle h-br"></span>
-      <span class="sel-dim"></span>
-    </div>
-    <div class="type-caret"></div>
-    <div class="d-cursor hidden">
-      <svg viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="#5e5263" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      <span class="d-cursor-name">Mahi</span>
-    </div>`;
-  document.body.appendChild(layer);
-
-  const box = layer.querySelector(".sel-box");
-  const boxName = layer.querySelector(".sel-name");
-  const boxDim = layer.querySelector(".sel-dim");
-  const caret = layer.querySelector(".type-caret");
-  const cursor = layer.querySelector(".d-cursor");
-
-  const skipBtn = document.createElement("button");
-  skipBtn.className = "skip-build gone";
-  skipBtn.type = "button";
-  skipBtn.textContent = "Skip animation";
-  document.body.appendChild(skipBtn);
-
-  let skipped = false;
-
-  // ---- helpers ----
-  const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-  const linear = (t) => t;
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  function tween(ms, ease, onUpdate) {
-    return new Promise((resolve) => {
-      if (skipped || ms <= 0) { onUpdate(1); return resolve(); }
-      const start = performance.now();
-      function frame(now) {
-        const t = Math.min(1, (now - start) / ms);
-        onUpdate(ease(t));
-        if (t < 1 && !skipped) requestAnimationFrame(frame);
-        else { onUpdate(1); resolve(); }
-      }
-      requestAnimationFrame(frame);
-    });
-  }
-
-  // The overlay scrolls with the page, so positions are measured from its corner.
-  function origin() {
-    const r = layer.getBoundingClientRect();
-    return { x: r.left, y: r.top };
-  }
-
-  function textRange(el) {
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    return range;
-  }
-
-  function layerRect(el, isText) {
-    const o = origin();
-    const r = isText ? textRange(el).getBoundingClientRect() : el.getBoundingClientRect();
-    return { x: r.left - o.x, y: r.top - o.y, w: r.width, h: r.height };
-  }
-
-  // One box per line of a heading, so wrapped headings (phones) type line by line
-  function textLines(el) {
-    const lines = [];
-    [...textRange(el).getClientRects()]
-      .filter((r) => r.width > 0 && r.height > 0)
-      .forEach((r) => {
-        const line = lines.find((l) => Math.abs(l.top - r.top) < r.height / 2);
-        if (line) {
-          line.left = Math.min(line.left, r.left);
-          line.right = Math.max(line.right, r.right);
-          line.top = Math.min(line.top, r.top);
-          line.bottom = Math.max(line.bottom, r.bottom);
-        } else {
-          lines.push({ left: r.left, right: r.right, top: r.top, bottom: r.bottom });
-        }
-      });
-    return lines.sort((a, b) => a.top - b.top);
-  }
-
-  function onScreen(el) {
-    const r = el.getBoundingClientRect();
-    return r.bottom > 0 && r.top < innerHeight;
-  }
-
-  function labelFor(el) {
-    if (el.matches(".navbar")) return "Navbar";
-    if (el.matches(".avatar-wrap")) return "Avatar";
-    if (el.matches(".btn")) return "Button";
-    if (el.matches(".tag")) return "Tag";
-    if (el.matches(TYPE_SELECTOR)) return "Heading";
-    if (el.matches("p")) return "Text";
-    return "Card";
-  }
-
-  let pos = { x: layer.offsetWidth + 40, y: innerHeight * 0.8 - origin().y };
-  function placeCursor(x, y) {
-    pos = { x, y };
-    cursor.style.transform = `translate(${x - 3}px, ${y - 2}px)`;
-  }
-  placeCursor(pos.x, pos.y);
-
-  function moveCursor(x, y, speed) {
-    const from = { ...pos };
-    const dist = Math.hypot(x - from.x, y - from.y);
-    const ms = Math.min(750, Math.max(260, dist * 0.7)) * speed;
-    return tween(ms, easeInOut, (e) =>
-      placeCursor(from.x + (x - from.x) * e, from.y + (y - from.y) * e)
-    );
-  }
-
-  function setBox(x, y, w, h) {
-    box.style.transform = `translate(${x}px, ${y}px)`;
-    box.style.width = `${w}px`;
-    box.style.height = `${h}px`;
-    boxDim.textContent = `${Math.round(w)} × ${Math.round(h)}`;
-  }
-
-  function reveal(el, ms = 350) {
-    el.style.transition = `opacity ${ms}ms ease`;
-    el.classList.add("built");
-    setTimeout(() => (el.style.transition = ""), ms + 50);
-  }
-
-  // type a heading in, line by line, with a blinking caret
-  async function typeIn(el, speed) {
-    const o = origin();
-    const elBox = el.getBoundingClientRect();
-    const lines = textLines(el).map((l) => ({
-      x: l.left - elBox.left, y: l.top - elBox.top, w: l.right - l.left, h: l.bottom - l.top,
-    }));
-    if (!lines.length) return reveal(el);
-    // line boxes can overlap a little; split the overlap so the next line never peeks through
-    lines.forEach((l, i) => {
-      const prev = lines[i - 1], next = lines[i + 1];
-      l.top = prev ? (prev.y + prev.h + l.y) / 2 : l.y - 2;
-      l.bottom = next ? (l.y + l.h + next.y) / 2 : l.y + l.h + 2;
-    });
-    const total = lines.reduce((s, l) => s + l.w, 0);
-    const chars = Math.max(1, el.textContent.trim().length);
-
-    // Show only the first `px` of text, counted across the lines in order.
-    // Each line is its own rectangle inside one clip polygon.
-    function showUpTo(px) {
-      const pts = [];
-      let left = px;
-      let caretAt = { x: lines[0].x, y: lines[0].y, h: lines[0].h };
-      for (const l of lines) {
-        const w = Math.min(l.w, Math.max(0, left));
-        left -= l.w;
-        if (w <= 0) break;
-        const x0 = l.x - 8, y0 = l.top;
-        const x1 = l.x + w + (w >= l.w ? 8 : 0), y1 = l.bottom;
-        pts.push(`${x0}px ${y0}px`, `${x1}px ${y0}px`, `${x1}px ${y1}px`, `${x0}px ${y1}px`, `${x0}px ${y0}px`);
-        caretAt = { x: l.x + w, y: l.y, h: l.h };
-      }
-      el.style.clipPath = pts.length ? `polygon(${pts.join(",")})` : "inset(50%)";
-      caret.style.height = `${caretAt.h}px`;
-      caret.style.transform = `translate(${elBox.left - o.x + caretAt.x}px, ${elBox.top - o.y + caretAt.y}px)`;
-    }
-
-    showUpTo(0);
-    el.classList.add("built");
-    caret.className = "type-caret on";
-    const last = lines[lines.length - 1];
-    await moveCursor(elBox.left - o.x + last.x + last.w + 14, elBox.top - o.y + last.y + last.h + 10, speed * 0.6);
-    await tween(Math.min(1400, chars * 55) * speed, linear, (e) => {
-      showUpTo(total * (Math.round(e * chars) / chars));
-    });
-    el.style.clipPath = "";
-    caret.className = "type-caret";
-  }
-
-  // ---- build one component ----
-  async function build(el, speed) {
-    const isText = el.matches(TYPE_SELECTOR);
-    const r = layerRect(el, isText);
-
-    await moveCursor(r.x, r.y, speed);
-    if (skipped) return;
-
-    // press and drag out the frame
-    cursor.classList.add("press");
-    box.className = "sel-box on" + (isText ? " text-mode" : "");
-    boxName.textContent = labelFor(el);
-    setBox(r.x, r.y, 0, 0);
-    await tween(520 * speed, easeOut, (e) => {
-      setBox(r.x, r.y, r.w * e, r.h * e);
-      placeCursor(r.x + r.w * e, r.y + r.h * e);
-    });
-    cursor.classList.remove("press");
-    if (skipped) return;
-
-    if (isText) await typeIn(el, speed);
-    else reveal(el);
-
-    await wait(160 * speed);
-    box.classList.add("fade");
-  }
-
-  // ---- queue: build components in page order as their section scrolls into view ----
-  const queue = [];
-  let running = false;
-  let idleTimer;
-
-  async function run() {
-    if (running) return;
-    running = true;
-    clearTimeout(idleTimer);
-    cursor.classList.remove("hidden");
-    skipBtn.classList.remove("gone");
-    while (queue.length && !skipped) {
-      queue.sort((a, b) => targets.indexOf(a) - targets.indexOf(b));
-      const el = queue.shift();
-      // Already scrolled past it (e.g. jumped via the menu)? Just show it.
-      if (!onScreen(el)) { reveal(el, 250); continue; }
-      // speed up when the visitor scrolls ahead of the cursor
-      const speed = queue.length > 5 ? 0.5 : queue.length > 2 ? 0.75 : 1;
-      await build(el, speed);
-    }
-    running = false;
-    if (skipped) return;
-    if (targets.every((t) => t.classList.contains("built"))) {
-      setTimeout(finish, 900);
-    } else {
-      idleTimer = setTimeout(() => {
-        cursor.classList.add("hidden");
-        skipBtn.classList.add("gone");
-      }, 1200);
-    }
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          observer.unobserve(entry.target);
-          queue.push(entry.target);
-        }
-      });
-      run();
-    },
-    { threshold: 0.15 }
-  );
-  targets.forEach((el) => observer.observe(el));
-
-  function finish() {
-    skipped = true;
-    observer.disconnect();
-    targets.forEach((el) => {
-      el.classList.add("built");
-      el.style.clipPath = "";
-    });
-    root.classList.remove("building");
-    skipBtn.classList.add("gone");
-    cursor.classList.add("hidden");
-    box.className = "sel-box";
-    caret.className = "type-caret";
-    setTimeout(() => { layer.remove(); skipBtn.remove(); }, 500);
-  }
-
-  skipBtn.addEventListener("click", finish);
-})();
-
-/* ================= Mobile menu ================= */
-(function () {
-  const nav = document.querySelector(".navbar");
-  const toggle = nav && nav.querySelector(".nav-toggle");
-  if (!toggle) return;
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   function setOpen(open) {
     nav.classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open);
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   }
 
   toggle.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
   nav.querySelectorAll(".nav-links a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
-  document.addEventListener("click", (e) => { if (!nav.contains(e.target)) setOpen(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  window.addEventListener("resize", () => { if (window.innerWidth > 833) setOpen(false); });
+})();
+
+/* ================= Reveal on scroll ================= */
+(function () {
+  const els = document.querySelectorAll("[data-reveal]");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("in");
+        io.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+  );
+  els.forEach((el) => io.observe(el));
+})();
+
+/* ================= Scroll-linked effects =================
+   - Hero: the illustration eases back and fades as you scroll past it.
+   - About: the statement lights up word by word as it moves up the screen.
+*/
+(function () {
+  const hero = document.querySelector(".hero");
+  const statement = document.getElementById("statement");
+  if (!statement) return;
+
+  // Wrap each word so it can light up on its own
+  const words = statement.textContent.trim().split(/\s+/);
+  statement.textContent = "";
+  const spans = words.map((word, i) => {
+    const span = document.createElement("span");
+    span.className = "w";
+    span.textContent = word;
+    statement.appendChild(span);
+    if (i < words.length - 1) statement.appendChild(document.createTextNode(" "));
+    return span;
+  });
+
+  if (reduceMotion) {
+    spans.forEach((s) => s.classList.add("lit"));
+    return;
+  }
+
+  const clamp = (v) => Math.min(1, Math.max(0, v));
+  let queued = false;
+
+  function update() {
+    queued = false;
+    const vh = window.innerHeight;
+
+    if (hero) {
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty("--hp", clamp(-r.top / (r.height * 0.75)).toFixed(3));
+    }
+
+    const s = statement.getBoundingClientRect();
+    const start = vh * 0.85;            // first word lights when the text reaches here
+    const end = vh * 0.25;              // last word lights when its bottom reaches here
+    const progress = clamp((start - s.top) / (start - end + s.height - vh * 0.1));
+    const lit = Math.round(progress * spans.length);
+    spans.forEach((span, i) => span.classList.toggle("lit", i < lit));
+  }
+
+  function queue() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
 })();
 
 /* ================= Memory Match ================= */
@@ -492,10 +290,10 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }
 
   function draw() {
-    ctx.fillStyle = "#f9edd3";
+    ctx.fillStyle = "#f5f5f7";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#c0566a";
+    ctx.fillStyle = "#a86b74";
     ctx.beginPath();
     ctx.arc(
       food.x * CELL + CELL / 2,
@@ -507,7 +305,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     ctx.fill();
 
     snake.forEach((seg, i) => {
-      ctx.fillStyle = i === 0 ? "#5e5263" : "#6e6f94";
+      ctx.fillStyle = i === 0 ? "#5e5263" : "#9496b8";
       ctx.beginPath();
       ctx.roundRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2, 4);
       ctx.fill();

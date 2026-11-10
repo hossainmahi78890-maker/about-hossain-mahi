@@ -4,242 +4,447 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Hussain Mahi</title>
+<meta name="description" content="Hussain Mahi: coder by craft, hardware tinkerer by curiosity, always exploring something new." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
-<script>
-  // Every visit: each section is built Figma-style the first time you scroll to it.
-  // Reduced motion skips the animation and shows everything right away.
-  (function () {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.documentElement.classList.add("building");
-  })();
-</script>
+<script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
 
-  <nav class="navbar glass">
-    <span class="brand">Hussain<span class="dot">.</span>Mahi</span>
-    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#interests">Interests</a></li>
-      <li><a href="#hobbies">Hobbies</a></li>
-      <li><a href="#games">Games</a></li>
-      <li><a href="#connect">Connect</a></li>
-    </ul>
+  <!-- ================= Global nav ================= -->
+  <nav class="gnav" id="gnav" aria-label="Main">
+    <div class="gnav-inner">
+      <a class="brand" href="#top"><span class="brand-mark">HM</span>Hussain Mahi</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#interests">Interests</a></li>
+        <li><a href="#hobbies">Hobbies</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#connect">Connect</a></li>
+      </ul>
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
+      </button>
+    </div>
   </nav>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="avatar-wrap glass">
-      <svg class="avatar" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Waving cartoon avatar">
-        <defs>
-          <radialGradient id="faceShade" cx="35%" cy="30%" r="80%">
-            <stop offset="0%" stop-color="#ffe4c2"/>
-            <stop offset="100%" stop-color="#ffd6a3"/>
-          </radialGradient>
-          <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#babbd0"/>
-            <stop offset="100%" stop-color="#6e6f94"/>
-          </linearGradient>
-        </defs>
-
-        <!-- body / shirt -->
-        <path d="M75 300 C75 210 105 175 150 175 C195 175 225 210 225 300 Z" fill="url(#shirtGrad)"/>
-        <rect x="130" y="178" width="40" height="26" rx="6" fill="#5e5263"/>
-
-        <!-- waving arm -->
-        <g class="wave-arm">
-          <path d="M188 210 C215 205 235 185 238 158" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none"/>
-          <circle cx="238" cy="155" r="15" fill="#ffd6a3"/>
-        </g>
-
-        <!-- still arm -->
-        <path d="M112 212 C95 218 84 235 82 258" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none"/>
-
-        <!-- neck -->
-        <rect x="138" y="150" width="24" height="30" fill="#ffd6a3"/>
-
-        <!-- head -->
-        <circle cx="150" cy="115" r="72" fill="url(#faceShade)"/>
-
-        <!-- ears -->
-        <circle cx="80" cy="118" r="10" fill="#ffd6a3"/>
-        <circle cx="220" cy="118" r="10" fill="#ffd6a3"/>
-
-        <!-- hair -->
-        <path d="M78 100 C70 45 110 15 150 15 C190 15 230 45 222 100
-                 C215 70 195 55 150 55 C105 55 85 70 78 100 Z" fill="#1b1b22"/>
-        <path d="M118 45 C126 30 138 22 150 22" stroke="#1b1b22" stroke-width="10" stroke-linecap="round" fill="none"/>
-
-        <!-- glasses -->
-        <circle cx="120" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6"/>
-        <circle cx="180" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6"/>
-        <line x1="146" y1="120" x2="154" y2="120" stroke="#1b1b22" stroke-width="6"/>
-        <line x1="94" y1="118" x2="80" y2="112" stroke="#1b1b22" stroke-width="5"/>
-        <line x1="206" y1="118" x2="220" y2="112" stroke="#1b1b22" stroke-width="5"/>
-
-        <!-- eyes -->
-        <circle cx="120" cy="122" r="5" fill="#1b1b22"/>
-        <circle cx="180" cy="122" r="5" fill="#1b1b22"/>
-
-        <!-- nose + mouth -->
-        <circle cx="150" cy="138" r="4" fill="#e2996b"/>
-        <path d="M132 152 Q150 168 168 152" stroke="#1b1b22" stroke-width="5" stroke-linecap="round" fill="none"/>
-
-        <!-- blush -->
-        <circle cx="103" cy="140" r="7" fill="#ff9d9d" opacity="0.55"/>
-        <circle cx="197" cy="140" r="7" fill="#ff9d9d" opacity="0.55"/>
-      </svg>
-    </div>
-
-    <h1 class="hero-title">Hi, I'm <span class="highlight">Hussain Mahi</span></h1>
-    <p class="hero-sub">Coder by craft, hardware tinkerer by curiosity — always exploring something new.</p>
-
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#connect">Let's Connect</a>
-      <a class="btn btn-ghost" href="#about">About Me</a>
-    </div>
-  </header>
-
-  <!-- ABOUT -->
-  <section id="about" class="section">
-    <div class="section-head">
-      <span class="tag">Who I Am</span>
-      <h2>About Me</h2>
-    </div>
-    <div class="glass about-card">
-      <p>
-        I'm someone who loves building and breaking things apart just to understand how they work.
-        Coding gives me a way to turn ideas into something real, while messing around with hardware
-        scratches a different itch — wires, boards, and figuring out how software actually talks to
-        the physical world. I'm always chasing the next thing worth learning, whether that means a
-        new language, a new project, or a completely new rabbit hole to fall into.
-      </p>
-    </div>
-  </section>
-
-  <!-- INTERESTS -->
-  <section id="interests" class="section">
-    <div class="section-head">
-      <span class="tag">What I Do</span>
-      <h2>Things I Love</h2>
-    </div>
-    <div class="grid grid-2">
-      <div class="glass feature-card">
-        <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-        <h3>Coding</h3>
-        <p>Writing code to solve problems, build ideas, and see them come to life — one project at a time.</p>
-      </div>
-      <div class="glass feature-card">
-        <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div>
-        <h3>Hardware Tinkering</h3>
-        <p>Opening things up, wiring things together, and figuring out how computers work beneath the software.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOBBIES -->
-  <section id="hobbies" class="section">
-    <div class="section-head">
-      <span class="tag">Beyond the Screen</span>
-      <h2>Hobbies &amp; Curiosities</h2>
-    </div>
-    <div class="grid grid-4">
-      <div class="glass hobby-card">
-        <div class="icon-circle small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-        <h3>Travelling</h3>
-        <p>Exploring new places and collecting stories along the way.</p>
-      </div>
-      <div class="glass hobby-card">
-        <div class="icon-circle small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></div>
-        <h3>Ancient Books</h3>
-        <p>Reading old texts and losing myself in forgotten knowledge.</p>
-      </div>
-      <div class="glass hobby-card">
-        <div class="icon-circle small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        <h3>History's Mysteries</h3>
-        <p>Digging into unsolved and mysterious moments of history.</p>
-      </div>
-      <div class="glass hobby-card">
-        <div class="icon-circle small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
-        <h3>Paranormal</h3>
-        <p>Curious about the unexplained and everything beyond the ordinary.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- GAMES -->
-  <section id="games" class="section">
-    <div class="section-head">
-      <span class="tag">Take a Break</span>
-      <h2>Play Something I Built</h2>
-      <p class="section-sub">Hey, you can spend some time by playing games that I created.</p>
-    </div>
-
-    <div class="grid grid-2 games-grid">
-      <!-- Memory Match -->
-      <div class="glass game-card">
-        <h3>Memory Match</h3>
-        <p>Flip the cards and find every matching pair.</p>
-        <div class="game-stats">
-          <span>Moves: <b id="memMoves">0</b></span>
-          <button class="btn btn-ghost btn-small" id="memReset">Restart</button>
+  <main>
+    <!-- ================= Hero ================= -->
+    <header class="hero" id="top">
+      <div class="hero-copy wrap">
+        <p class="eyebrow" data-reveal>Hussain Mahi</p>
+        <h1 class="hero-title" data-reveal data-delay="1">Coder. Tinkerer.<br /><span class="grad">Explorer.</span></h1>
+        <p class="hero-sub" data-reveal data-delay="2">Turning ideas into code, and code into things you can touch.</p>
+        <div class="cta-row" data-reveal data-delay="3">
+          <a class="pill" href="#connect">Say hello</a>
+          <a class="pill pill-outline" href="#about">Learn more</a>
         </div>
-        <div class="memory-board" id="memoryBoard"></div>
-        <p class="game-message" id="memMessage">&nbsp;</p>
       </div>
 
-      <!-- Snake -->
-      <div class="glass game-card">
-        <h3>Snake</h3>
-        <p>Guide the snake to eat the berries. Arrow keys, WASD, or swipe.</p>
-        <div class="game-stats">
-          <span>Score: <b id="snakeScore">0</b></span>
-          <button class="btn btn-ghost btn-small" id="snakeReset">Restart</button>
-        </div>
-        <canvas id="snakeCanvas" width="300" height="300"></canvas>
-        <div class="dpad" id="snakePad" aria-label="Snake controls">
-          <button type="button" class="dpad-btn up" data-dir="0,-1" aria-label="Move up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 15 12 9 18 15"/></svg></button>
-          <button type="button" class="dpad-btn left" data-dir="-1,0" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button type="button" class="dpad-btn right" data-dir="1,0" aria-label="Move right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
-          <button type="button" class="dpad-btn down" data-dir="0,1" aria-label="Move down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        </div>
-        <p class="game-message" id="snakeMessage">Click the board, then press an arrow key to start.</p>
-      </div>
-    </div>
-  </section>
+      <div class="hero-art" data-reveal data-delay="2">
+        <svg class="orbit-art" viewBox="0 0 600 600" role="img" aria-label="Illustration of Hussain waving, with coding, hardware, travel and books orbiting around him">
+          <defs>
+            <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#e8e8f1" />
+              <stop offset="100%" stop-color="#e8e8f1" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="faceShade" cx="35%" cy="30%" r="80%">
+              <stop offset="0%" stop-color="#ffe4c2" />
+              <stop offset="100%" stop-color="#ffd6a3" />
+            </radialGradient>
+            <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6e6f94" />
+              <stop offset="100%" stop-color="#5e5263" />
+            </linearGradient>
+            <linearGradient id="discGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d4d5e4" />
+              <stop offset="100%" stop-color="#9496b8" />
+            </linearGradient>
+            <clipPath id="avatarClip"><circle cx="150" cy="150" r="140" /></clipPath>
+            <filter id="badgeShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1d1d1f" flood-opacity="0.12" />
+            </filter>
+          </defs>
 
-  <!-- CONNECT -->
-  <section id="connect" class="section">
-    <div class="section-head">
-      <span class="tag">Reach Out</span>
-      <h2>Let's Connect</h2>
-    </div>
-    <div class="grid grid-2">
-      <a class="glass social-card" href="https://www.instagram.com/mahi.mdhussain/" target="_blank" rel="noopener noreferrer">
-        <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-        <div>
-          <h3>Instagram</h3>
-          <p>@mahi.mdhussain</p>
+          <circle cx="300" cy="300" r="295" fill="url(#heroGlow)" />
+          <circle cx="300" cy="300" r="235" fill="none" stroke="#d2d2d7" stroke-width="1.5" stroke-dasharray="1 11" stroke-linecap="round" />
+          <circle cx="300" cy="300" r="172" fill="none" stroke="#e5e5ea" stroke-width="1.5" />
+
+          <!-- avatar -->
+          <g transform="translate(150 150)">
+            <circle cx="150" cy="150" r="140" fill="url(#discGrad)" />
+            <g clip-path="url(#avatarClip)">
+              <path d="M75 300 C75 210 105 175 150 175 C195 175 225 210 225 300 Z" fill="url(#shirtGrad)" />
+              <rect x="130" y="178" width="40" height="26" rx="6" fill="#45394a" />
+              <g class="wave-arm">
+                <path d="M188 210 C215 205 235 185 238 158" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none" />
+                <circle cx="238" cy="155" r="15" fill="#ffd6a3" />
+              </g>
+              <path d="M112 212 C95 218 84 235 82 258" stroke="#ffd6a3" stroke-width="20" stroke-linecap="round" fill="none" />
+              <rect x="138" y="150" width="24" height="30" fill="#ffd6a3" />
+              <circle cx="150" cy="115" r="72" fill="url(#faceShade)" />
+              <circle cx="80" cy="118" r="10" fill="#ffd6a3" />
+              <circle cx="220" cy="118" r="10" fill="#ffd6a3" />
+              <path d="M78 100 C70 45 110 15 150 15 C190 15 230 45 222 100 C215 70 195 55 150 55 C105 55 85 70 78 100 Z" fill="#1b1b22" />
+              <path d="M118 45 C126 30 138 22 150 22" stroke="#1b1b22" stroke-width="10" stroke-linecap="round" fill="none" />
+              <circle cx="120" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6" />
+              <circle cx="180" cy="120" r="26" fill="none" stroke="#1b1b22" stroke-width="6" />
+              <line x1="146" y1="120" x2="154" y2="120" stroke="#1b1b22" stroke-width="6" />
+              <line x1="94" y1="118" x2="80" y2="112" stroke="#1b1b22" stroke-width="5" />
+              <line x1="206" y1="118" x2="220" y2="112" stroke="#1b1b22" stroke-width="5" />
+              <circle cx="120" cy="122" r="5" fill="#1b1b22" />
+              <circle cx="180" cy="122" r="5" fill="#1b1b22" />
+              <circle cx="150" cy="138" r="4" fill="#e2996b" />
+              <path d="M132 152 Q150 168 168 152" stroke="#1b1b22" stroke-width="5" stroke-linecap="round" fill="none" />
+              <circle cx="103" cy="140" r="7" fill="#ff9d9d" opacity="0.55" />
+              <circle cx="197" cy="140" r="7" fill="#ff9d9d" opacity="0.55" />
+            </g>
+          </g>
+
+          <!-- orbiting interests -->
+          <g class="orbit">
+            <g transform="translate(535 300)"><g class="badge">
+              <circle r="38" fill="#ffffff" filter="url(#badgeShadow)" />
+              <g transform="translate(-16 -16) scale(1.333)" fill="none" stroke="#6e6f94" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></g>
+            </g></g>
+            <g transform="translate(300 535)"><g class="badge">
+              <circle r="38" fill="#ffffff" filter="url(#badgeShadow)" />
+              <g transform="translate(-16 -16) scale(1.333)" fill="none" stroke="#6e6f94" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2" /><rect x="9" y="9" width="6" height="6" /><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" /></g>
+            </g></g>
+            <g transform="translate(65 300)"><g class="badge">
+              <circle r="38" fill="#ffffff" filter="url(#badgeShadow)" />
+              <g transform="translate(-16 -16) scale(1.333)" fill="none" stroke="#6e6f94" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></g>
+            </g></g>
+            <g transform="translate(300 65)"><g class="badge">
+              <circle r="38" fill="#ffffff" filter="url(#badgeShadow)" />
+              <g transform="translate(-16 -16) scale(1.333)" fill="none" stroke="#6e6f94" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z" /><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" /></g>
+            </g></g>
+          </g>
+
+          <!-- sparkles -->
+          <g fill="#9496b8">
+            <g transform="translate(128 118)"><path class="twinkle" style="--i:0" d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" /></g>
+            <g transform="translate(470 150)"><path class="twinkle" style="--i:1" d="M0 -7 L1.8 -1.8 L7 0 L1.8 1.8 L0 7 L-1.8 1.8 L-7 0 L-1.8 -1.8 Z" /></g>
+            <g transform="translate(478 462)"><path class="twinkle" style="--i:2" d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" /></g>
+            <g transform="translate(122 470)"><path class="twinkle" style="--i:3" d="M0 -6 L1.5 -1.5 L6 0 L1.5 1.5 L0 6 L-1.5 1.5 L-6 0 L-1.5 -1.5 Z" /></g>
+          </g>
+        </svg>
+      </div>
+    </header>
+
+    <!-- ================= About ================= -->
+    <section id="about" class="panel panel-dark about on-dark">
+      <div class="wrap narrow">
+        <p class="eyebrow" data-reveal>About me</p>
+        <p class="statement" id="statement">I love building things and breaking them apart, just to understand how they work. Code turns my ideas into something real. Hardware shows me how software talks to the physical world.</p>
+        <p class="about-more" data-reveal>I'm always chasing the next thing worth learning, whether that's a new language, a new project, or a completely new rabbit hole to fall into.</p>
+      </div>
+    </section>
+
+    <!-- ================= Interests ================= -->
+    <section id="interests" class="panel">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">What I do</p>
+          <h2>Things I love.</h2>
         </div>
-      </a>
-      <a class="glass social-card" href="https://github.com/hossainmahi78890-maker" target="_blank" rel="noopener noreferrer">
-        <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
-        <div>
-          <h3>GitHub</h3>
-          <p>hossainmahi78890-maker</p>
+
+        <div class="tiles tiles-2">
+          <!-- Coding -->
+          <article class="tile" data-reveal>
+            <h3>Coding.</h3>
+            <p>Writing code to solve problems and bring ideas to life, one project at a time.</p>
+            <a class="link" href="https://github.com/hossainmahi78890-maker" target="_blank" rel="noopener noreferrer">See my GitHub</a>
+            <svg class="tile-art art-code" viewBox="0 0 440 280" aria-hidden="true">
+              <defs>
+                <filter id="windowShadow" x="-20%" y="-20%" width="140%" height="160%">
+                  <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#1d1d1f" flood-opacity="0.12" />
+                </filter>
+              </defs>
+              <rect x="40" y="34" width="360" height="290" rx="18" fill="#ffffff" filter="url(#windowShadow)" />
+              <line x1="40" y1="72" x2="400" y2="72" stroke="#e5e5ea" stroke-width="1.5" />
+              <circle cx="64" cy="53" r="6" fill="#a86b74" />
+              <circle cx="84" cy="53" r="6" fill="#f2aa8c" />
+              <circle cx="104" cy="53" r="6" fill="#babbd0" />
+              <rect x="300" y="47" width="76" height="12" rx="6" fill="#f5f5f7" />
+              <g>
+                <rect class="cl" style="--i:0" x="68" y="94" width="118" height="10" rx="5" fill="#6e6f94" />
+                <rect class="cl" style="--i:1" x="90" y="116" width="176" height="10" rx="5" fill="#babbd0" />
+                <rect class="cl" style="--i:2" x="90" y="138" width="86" height="10" rx="5" fill="#a86b74" />
+                <rect class="cl" style="--i:3" x="182" y="138" width="112" height="10" rx="5" fill="#d2d2d7" />
+                <rect class="cl" style="--i:4" x="112" y="160" width="150" height="10" rx="5" fill="#f2aa8c" />
+                <rect class="cl" style="--i:5" x="112" y="182" width="204" height="10" rx="5" fill="#d2d2d7" />
+                <rect class="cl" style="--i:6" x="90" y="204" width="72" height="10" rx="5" fill="#babbd0" />
+                <rect class="cl" style="--i:7" x="68" y="226" width="40" height="10" rx="5" fill="#6e6f94" />
+              </g>
+              <rect class="caret" x="116" y="222" width="3" height="18" rx="1.5" fill="#6e6f94" />
+            </svg>
+          </article>
+
+          <!-- Hardware -->
+          <article class="tile tile-dark on-dark" data-reveal data-delay="1">
+            <h3>Hardware.</h3>
+            <p>Opening things up, wiring them together, and finding out what's beneath the software.</p>
+            <svg class="tile-art art-chip" viewBox="0 0 440 280" aria-hidden="true">
+              <defs>
+                <linearGradient id="dieGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#babbd0" />
+                  <stop offset="100%" stop-color="#6e6f94" />
+                </linearGradient>
+              </defs>
+              <g fill="none" stroke="#2c2c2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M160 112 H112 L84 84 H20" />
+                <path d="M160 140 H20" />
+                <path d="M160 168 H112 L84 196 H20" />
+                <path d="M280 112 H328 L356 84 H420" />
+                <path d="M280 140 H420" />
+                <path d="M280 168 H328 L356 196 H420" />
+                <path d="M200 80 V18" />
+                <path d="M240 80 V48 L266 22 V4" />
+                <path d="M200 200 V280" />
+                <path d="M240 200 V232 L266 258 V280" />
+              </g>
+              <g fill="none" stroke="#babbd0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path class="sig" style="--i:0" pathLength="100" d="M160 112 H112 L84 84 H20" />
+                <path class="sig" style="--i:1" pathLength="100" d="M160 140 H20" />
+                <path class="sig" style="--i:2" pathLength="100" d="M160 168 H112 L84 196 H20" />
+                <path class="sig" style="--i:3" pathLength="100" d="M280 112 H328 L356 84 H420" />
+                <path class="sig" style="--i:4" pathLength="100" d="M280 140 H420" />
+                <path class="sig" style="--i:5" pathLength="100" d="M280 168 H328 L356 196 H420" />
+                <path class="sig" style="--i:6" pathLength="100" d="M200 80 V18" />
+                <path class="sig" style="--i:7" pathLength="100" d="M240 80 V48 L266 22 V4" />
+                <path class="sig" style="--i:8" pathLength="100" d="M200 200 V280" />
+                <path class="sig" style="--i:9" pathLength="100" d="M240 200 V232 L266 258 V280" />
+              </g>
+              <g fill="#3a3a3c">
+                <circle cx="20" cy="84" r="5" /><circle cx="20" cy="140" r="5" /><circle cx="20" cy="196" r="5" />
+                <circle cx="420" cy="84" r="5" /><circle cx="420" cy="140" r="5" /><circle cx="420" cy="196" r="5" />
+                <circle cx="200" cy="18" r="5" />
+              </g>
+              <rect x="160" y="80" width="120" height="120" rx="16" fill="#1c1c1e" stroke="#3a3a3c" stroke-width="2" />
+              <rect class="die" x="182" y="102" width="76" height="76" rx="10" fill="url(#dieGrad)" />
+              <text x="220" y="148" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="24" font-weight="700" fill="#ffffff" letter-spacing="-0.5">HM</text>
+            </svg>
+          </article>
         </div>
-      </a>
-    </div>
-  </section>
+      </div>
+    </section>
+
+    <!-- ================= Hobbies ================= -->
+    <section id="hobbies" class="panel panel-tight">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Beyond the screen</p>
+          <h2>Curious about everything.</h2>
+        </div>
+
+        <div class="tiles tiles-2 hobby-tiles">
+          <!-- Travelling -->
+          <article class="tile" data-reveal>
+            <h3>Travelling.</h3>
+            <p>New places. New stories.</p>
+            <svg class="tile-art art-travel" viewBox="0 0 440 260" aria-hidden="true">
+              <defs><clipPath id="globeClip"><circle cx="220" cy="175" r="110" /></clipPath></defs>
+              <circle cx="220" cy="175" r="110" fill="#e8e8f1" />
+              <g clip-path="url(#globeClip)">
+                <g fill="#babbd0">
+                  <path d="M150 130 C170 110 200 115 205 135 C210 155 185 165 175 185 C165 200 145 190 142 170 C140 155 135 145 150 130 Z" />
+                  <path d="M240 120 C265 105 300 118 305 140 C310 160 290 165 280 180 C270 200 250 195 248 178 C246 160 225 135 240 120 Z" />
+                  <path d="M200 215 C215 205 240 210 245 228 C248 245 225 255 210 250 C195 245 188 225 200 215 Z" />
+                </g>
+                <g fill="none" stroke="#9496b8" stroke-width="1.2" opacity="0.7">
+                  <ellipse cx="220" cy="175" rx="110" ry="38" />
+                  <line x1="110" y1="175" x2="330" y2="175" />
+                  <ellipse cx="220" cy="175" rx="80" ry="110"><animate attributeName="rx" values="80;6;80" dur="9s" repeatCount="indefinite" /></ellipse>
+                  <ellipse cx="220" cy="175" rx="30" ry="110"><animate attributeName="rx" values="30;100;30" dur="9s" repeatCount="indefinite" /></ellipse>
+                </g>
+              </g>
+              <path id="flightPath" d="M60 196 C 90 40, 330 10, 384 128" fill="none" stroke="#6e6f94" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round" />
+              <g class="pin" style="--i:0" transform="translate(60 196)"><path d="M0 0 C-9 -12 -12 -18 -12 -24 A12 12 0 0 1 12 -24 C12 -18 9 -12 0 0 Z" fill="#a86b74" /><circle cx="0" cy="-24" r="4.5" fill="#ffffff" /></g>
+              <g class="pin" style="--i:1" transform="translate(384 128)"><path d="M0 0 C-9 -12 -12 -18 -12 -24 A12 12 0 0 1 12 -24 C12 -18 9 -12 0 0 Z" fill="#a86b74" /><circle cx="0" cy="-24" r="4.5" fill="#ffffff" /></g>
+              <g>
+                <path d="M15 0 L-5 -4 L-9 -13 L-14 -13 L-10 -3.5 L-17 -2.5 L-20 -7 L-23 -7 L-21 0 L-23 7 L-20 7 L-17 2.5 L-10 3.5 L-14 13 L-9 13 L-5 4 Z" fill="#1d1d1f" />
+                <animateMotion dur="7s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.45 0 0.55 1"><mpath href="#flightPath" /></animateMotion>
+              </g>
+            </svg>
+          </article>
+
+          <!-- Ancient books -->
+          <article class="tile tile-dark on-dark" data-reveal data-delay="1">
+            <h3>Ancient books.</h3>
+            <p>Lost in forgotten knowledge.</p>
+            <svg class="tile-art art-books" viewBox="0 0 440 260" aria-hidden="true">
+              <defs>
+                <radialGradient id="bookGlow" cx="50%" cy="60%" r="50%">
+                  <stop offset="0%" stop-color="#f2aa8c" stop-opacity="0.45" />
+                  <stop offset="100%" stop-color="#f2aa8c" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <ellipse class="glow" cx="220" cy="160" rx="200" ry="120" fill="url(#bookGlow)" />
+              <g fill="#f6e2b4">
+                <circle class="dust" style="--i:0" cx="150" cy="120" r="2.5" />
+                <circle class="dust" style="--i:1" cx="205" cy="96" r="2" />
+                <circle class="dust" style="--i:2" cx="262" cy="110" r="3" />
+                <circle class="dust" style="--i:3" cx="300" cy="88" r="2" />
+                <circle class="dust" style="--i:4" cx="128" cy="92" r="2" />
+              </g>
+              <path d="M220 104 C175 84 110 84 52 99 V248 C110 233 175 233 220 253 C265 233 330 233 388 248 V99 C330 84 265 84 220 104 Z" fill="#5e5263" />
+              <path d="M220 96 C180 76 120 76 66 90 V236 C120 222 180 222 220 242 Z" fill="#f6e2b4" />
+              <path d="M220 96 C260 76 320 76 374 90 V236 C320 222 260 222 220 242 Z" fill="#fbf0d4" />
+              <g fill="none" stroke="#d9c08a" stroke-width="3" stroke-linecap="round">
+                <path d="M92 116 Q150 104 200 118" /><path d="M92 136 Q150 124 200 138" /><path d="M92 156 Q150 144 200 158" /><path d="M92 176 Q150 164 170 168" /><path d="M92 196 Q150 184 200 198" />
+                <path d="M240 118 Q290 104 348 116" /><path d="M240 138 Q290 124 348 136" /><path d="M240 158 Q290 144 348 156" /><path d="M270 168 Q290 164 348 176" /><path d="M240 198 Q290 184 348 196" />
+              </g>
+              <g class="flip">
+                <path d="M220 96 C260 76 320 76 374 90 V236 C320 222 260 222 220 242 Z" fill="#fbf0d4" />
+                <g fill="none" stroke="#d9c08a" stroke-width="3" stroke-linecap="round">
+                  <path d="M240 118 Q290 104 348 116" /><path d="M240 138 Q290 124 348 136" /><path d="M240 158 Q290 144 348 156" /><path d="M270 168 Q290 164 348 176" /><path d="M240 198 Q290 184 348 196" />
+                </g>
+              </g>
+              <line x1="220" y1="96" x2="220" y2="242" stroke="#d9c08a" stroke-width="2" />
+            </svg>
+          </article>
+
+          <!-- Paranormal -->
+          <article class="tile tile-dark on-dark" data-reveal>
+            <h3>Paranormal.</h3>
+            <p>Curious about the unexplained.</p>
+            <svg class="tile-art art-ghost" viewBox="0 0 440 260" aria-hidden="true">
+              <defs>
+                <filter id="mistBlur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9" /></filter>
+              </defs>
+              <circle cx="340" cy="62" r="34" fill="#babbd0" />
+              <circle cx="356" cy="52" r="30" fill="#000000" />
+              <g fill="#f5f5f7">
+                <g transform="translate(70 50)"><path class="twinkle" style="--i:0" d="M0 -7 L1.8 -1.8 L7 0 L1.8 1.8 L0 7 L-1.8 1.8 L-7 0 L-1.8 -1.8 Z" /></g>
+                <g transform="translate(130 22)"><circle class="twinkle" style="--i:1" r="2.5" /></g>
+                <g transform="translate(250 34)"><path class="twinkle" style="--i:2" d="M0 -5 L1.3 -1.3 L5 0 L1.3 1.3 L0 5 L-1.3 1.3 L-5 0 L-1.3 -1.3 Z" /></g>
+                <g transform="translate(400 120)"><circle class="twinkle" style="--i:3" r="2" /></g>
+                <g transform="translate(40 130)"><circle class="twinkle" style="--i:4" r="2" /></g>
+                <g transform="translate(296 118)"><path class="twinkle" style="--i:5" d="M0 -6 L1.5 -1.5 L6 0 L1.5 1.5 L0 6 L-1.5 1.5 L-6 0 L-1.5 -1.5 Z" /></g>
+              </g>
+              <g transform="translate(205 165)">
+                <g class="ghost">
+                  <path class="ghost-body" d="M0 -64 C36 -64 58 -38 58 0 V58 L44 47 L29 58 L14 47 L0 58 L-14 47 L-29 58 L-44 47 L-58 58 V0 C-58 -38 -36 -64 0 -64 Z" fill="#f5f5f7" />
+                  <ellipse cx="-19" cy="-12" rx="7" ry="10" fill="#1d1d1f" />
+                  <ellipse cx="19" cy="-12" rx="7" ry="10" fill="#1d1d1f" />
+                  <ellipse cx="0" cy="14" rx="7" ry="9" fill="#1d1d1f" />
+                  <circle cx="-30" cy="6" r="6" fill="#babbd0" opacity="0.6" />
+                  <circle cx="30" cy="6" r="6" fill="#babbd0" opacity="0.6" />
+                </g>
+              </g>
+              <g class="mist" filter="url(#mistBlur)" fill="#9496b8" opacity="0.35">
+                <ellipse cx="140" cy="248" rx="120" ry="18" />
+                <ellipse cx="320" cy="244" rx="130" ry="20" />
+              </g>
+            </svg>
+          </article>
+
+          <!-- History's mysteries -->
+          <article class="tile" data-reveal data-delay="1">
+            <h3>History's mysteries.</h3>
+            <p>Digging into the unsolved.</p>
+            <svg class="tile-art art-mystery" viewBox="0 0 440 260" aria-hidden="true">
+              <circle class="sun" cx="350" cy="70" r="28" fill="#f2aa8c" />
+              <path d="M30 246 L96 150 L162 246 Z" fill="#efdcae" />
+              <path d="M96 150 L162 246 L104 246 Z" fill="#dcc48d" />
+              <path d="M110 246 L220 86 L330 246 Z" fill="#f6e2b4" />
+              <path d="M220 86 L330 246 L232 246 Z" fill="#e3c98f" />
+              <g stroke="#d9c08a" stroke-width="1.5" opacity="0.7">
+                <line x1="170" y1="160" x2="226" y2="160" /><line x1="148" y1="192" x2="228" y2="192" /><line x1="128" y1="222" x2="230" y2="222" />
+              </g>
+              <path d="M-10 266 C 110 234, 330 234, 450 266 Z" fill="#e9dfc6" />
+              <g class="lens">
+                <circle r="30" fill="#ffffff" fill-opacity="0.6" stroke="#1d1d1f" stroke-width="6" />
+                <line x1="22" y1="22" x2="48" y2="48" stroke="#1d1d1f" stroke-width="10" stroke-linecap="round" />
+                <text y="11" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="32" font-weight="700" fill="#6e6f94">?</text>
+              </g>
+            </svg>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Games ================= -->
+    <section id="games" class="panel panel-alt">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Take a break</p>
+          <h2>Play something I built.</h2>
+          <p class="lede">Two little games, made by hand. Go ahead, have a go.</p>
+        </div>
+
+        <div class="tiles tiles-2 game-tiles">
+          <article class="tile game-tile" data-reveal>
+            <h3>Memory Match.</h3>
+            <p>Flip the cards and find every pair.</p>
+            <div class="game-stats">
+              <span>Moves <b id="memMoves">0</b></span>
+              <button class="pill pill-outline pill-small" id="memReset" type="button">Restart</button>
+            </div>
+            <div class="memory-board" id="memoryBoard"></div>
+            <p class="game-message" id="memMessage">&nbsp;</p>
+          </article>
+
+          <article class="tile game-tile" data-reveal data-delay="1">
+            <h3>Snake.</h3>
+            <p>Arrow keys, WASD, or swipe.</p>
+            <div class="game-stats">
+              <span>Score <b id="snakeScore">0</b></span>
+              <button class="pill pill-outline pill-small" id="snakeReset" type="button">Restart</button>
+            </div>
+            <canvas id="snakeCanvas" width="300" height="300"></canvas>
+            <div class="dpad" id="snakePad" aria-label="Snake controls">
+              <button type="button" class="dpad-btn up" data-dir="0,-1" aria-label="Move up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 15 12 9 18 15" /></svg></button>
+              <button type="button" class="dpad-btn left" data-dir="-1,0" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg></button>
+              <button type="button" class="dpad-btn right" data-dir="1,0" aria-label="Move right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6" /></svg></button>
+              <button type="button" class="dpad-btn down" data-dir="0,1" aria-label="Move down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+            </div>
+            <p class="game-message" id="snakeMessage">Click the board, then press an arrow key to start.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Connect ================= -->
+    <section id="connect" class="panel connect">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Reach out</p>
+          <h2>Let's build <span class="grad">something.</span></h2>
+          <p class="lede">Say hi, share an idea, or just see what I'm working on.</p>
+        </div>
+
+        <div class="connect-links" data-reveal data-delay="1">
+          <a class="connect-card" href="https://www.instagram.com/mahi.mdhussain/" target="_blank" rel="noopener noreferrer">
+            <span class="connect-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></span>
+            <span class="connect-text"><strong>Instagram</strong><span>@mahi.mdhussain</span></span>
+            <svg class="connect-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18" /></svg>
+          </a>
+          <a class="connect-card" href="https://github.com/hossainmahi78890-maker" target="_blank" rel="noopener noreferrer">
+            <span class="connect-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg></span>
+            <span class="connect-text"><strong>GitHub</strong><span>hossainmahi78890-maker</span></span>
+            <svg class="connect-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <p>&copy; <span id="year"></span> Hussain Mahi. Built with curiosity.</p>
+    <div class="wrap">
+      <p class="footer-note">Designed and built by Hussain Mahi. Every illustration on this page is drawn in code.</p>
+      <div class="footer-inner">
+        <p>Copyright &copy; <span id="year"></span> Hussain Mahi. Built with curiosity.</p>
+        <ul class="footer-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#games">Games</a></li>
+          <li><a href="#connect">Connect</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
 
   <script src="script.js"></script>
